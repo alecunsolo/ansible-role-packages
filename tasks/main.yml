@@ -17,7 +17,12 @@
     name: '{{ packages_removed }}'
     state: absent
 
-# apt, dnf and yum modules support 'autoremove' so it so it so it so it so it
+- name: Enable autoupdates
+  ansible.builtin.include_tasks:
+    file: autoupdates-{{ ansible_os_family | lower }}.yml
+  when: packages_autoupdate | bool
+
+# apt, dnf and yum modules support 'autoremove' so it
 # should be safe to use 'package' here.
 - name: Removed unnecessary packages.
   ansible.builtin.package:

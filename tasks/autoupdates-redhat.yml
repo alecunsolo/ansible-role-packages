@@ -1,0 +1,29 @@
+---
+- name: Install autoupdate package.
+  ansible.builtin.dnf:
+    name: dnf-automatic
+    state: present
+
+- name: Configure dnf-automatic.
+  ansible.builtin.template:
+    src: dnf-automatic.conf.j2
+    dest: /etc/dnf/dnf-automatic.conf
+    owner: root
+    group: root
+    mode: '644'
+
+- name: Ensure overwritten timers are not running.
+  ansible.builtin.service:
+    name: dnf-automatic-{{ item }}.timer
+    state: stopped
+    enabled: no
+  loop:
+    - download
+    - install
+    - notifyonly
+
+- name: Enable configured autoupdate timer.
+  ansible.builtin.service:
+    name: dnf-automatic.timer
+    state: started
+    enabled: yes
