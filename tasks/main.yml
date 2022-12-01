@@ -1,2 +1,25 @@
 ---
-# tasks file for packages
+- name: Install EPEL repository.
+  ansible.builtin.yum:
+    name: epel-release
+    state: present
+  when:
+    - ansible_os_family == "RedHat"
+    - packages_install_epel
+
+- name: Install requested packages.
+  ansible.builtin.package:
+    name: '{{ packages_installed }}'
+    state: present
+
+- name: Remove requested packages.
+  ansible.builtin.package:
+    name: '{{ packages_removed }}'
+    state: absent
+
+# apt, dnf and yum modules support 'autoremove' so it so it so it so it so it
+# should be safe to use 'package' here.
+- name: Removed unnecessary packages.
+  ansible.builtin.package:
+    autoremove: true
+  when: packages_autoremove | bool

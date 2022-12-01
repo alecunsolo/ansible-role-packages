@@ -1,0 +1,22 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Update apt cache.
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family | lower == "debian"
+    - name: Install safe-to-remove-later package.
+      ansible.builtin.package:
+        name: nano
+        state: present
+    - name: Retrieve nano executable.
+      ansible.builtin.stat:
+        path: /usr/bin/nano
+      register: nano
+    - name: Check nano status.
+      ansible.builtin.assert:
+        that: nano['stat']['exists']
+        fail_msg: "'nano' was not installed."
+        success_msg: "'nano' successfully installed."

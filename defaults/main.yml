@@ -1,2 +1,5 @@
 ---
-# defaults file for packages
+packages_install_epel: true
+packages_autoremove: true
+packages_installed: []
+packages_removed: []

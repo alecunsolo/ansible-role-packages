@@ -1,6 +1,11 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    packages_installed:
+      - zsh
+    packages_removed:
+      - nano
   tasks:
     - name: Include packages.
       ansible.builtin.include_role:
