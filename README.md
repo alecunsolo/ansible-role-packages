@@ -1,31 +1,75 @@
 Ansible Role: packages
 =========
 
-A brief description of the role goes here.
+This role manages the packages installed in the target.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yaml
+packages_install_epel: true
+```
+Whether to install EPEL repository. Only used for EL distros.
+```yaml
+packages_installed: []
+packages_removed: []
+```
+The packages that should be installed and uninstalled on the target.
+```yaml
+packages_autoupdate: true
+```
+Whether to enable automatic updates
+```yaml
+packages_dnf_automatic_type: security
+packages_dnf_automatic_timeout: 60
+packages_dnf_automatic_download: yes
+packages_dnf_automatic_apply: yes
+```
+`dnf-automatic` settings. See [templates/dnf-automatic.conf.j2](templates/dnf-automatic.conf.j2)
+```yaml
+# Ubuntu/Debian Automatic updates
+packages_unattended_upgrades_reboot: "false"
+packages_unattended_upgrades_reboot_time: 04:30
+packages_unattended_upgrades_mail_to: root
+packages_unattended_upgrades_mail_on_error: "true"
+
+packages_unattended_upgrades_repos:
+  # - origin=${distro_id},codename=${distro_codename}
+  # - origin=${distro_id},codename=${distro_codename}-updates
+  # - origin=${distro_id},codename=${distro_codename}-proposed-updates
+  - origin=${distro_id},codename=${distro_codename}-security
+packages_unattended_upgrades_blacklist: []
+packages_unattended_upgrades_updateonly: true
+```
+`unattented-upgrades` settings. See the template [templates/dnf-automatic.conf.j2](templates/52unattended-upgrades-local.j2) for more informations.
+NB the template uses `Unattended-Upgrade::Origins-Patter` config key. The syntax is different from `Unattended-Upgrade::Allowed-Origins`.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+- name: Example
+  hosts: all
+  vars:
+    packages_autoupdate: false
+    packages_installed:
+      - zsh
+    packages_removed:
+      - nano
+  tasks:
+    - name: Include packages.
+      ansible.builtin.include_role:
+        name: alecunsolo.packages
+```
 
 License
 -------
