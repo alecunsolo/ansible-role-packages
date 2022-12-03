@@ -32,16 +32,12 @@ packages_dnf_automatic_apply: yes
 ```
 `dnf-automatic` settings. See [templates/dnf-automatic.conf.j2](templates/dnf-automatic.conf.j2)
 ```yaml
-# Ubuntu/Debian Automatic updates
 packages_unattended_upgrades_reboot: "false"
 packages_unattended_upgrades_reboot_time: 04:30
 packages_unattended_upgrades_mail_to: root
 packages_unattended_upgrades_mail_on_error: "true"
 
 packages_unattended_upgrades_repos:
-  # - origin=${distro_id},codename=${distro_codename}
-  # - origin=${distro_id},codename=${distro_codename}-updates
-  # - origin=${distro_id},codename=${distro_codename}-proposed-updates
   - origin=${distro_id},codename=${distro_codename}-security
 packages_unattended_upgrades_blacklist: []
 packages_unattended_upgrades_updateonly: true
