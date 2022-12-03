@@ -7,7 +7,7 @@
 - name: Configure dnf-automatic.
   ansible.builtin.template:
     src: dnf-automatic.conf.j2
-    dest: /etc/dnf/dnf-automatic.conf
+    dest: /etc/dnf/automatic.conf
     owner: root
     group: root
     mode: '644'
