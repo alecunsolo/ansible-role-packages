@@ -1,6 +1,10 @@
 ---
 - name: Prepare
   hosts: all
+  pre_tasks:
+    - name: Set binary path
+      ansible.builtin.set_fact:
+        nano_path: '{{ (ansible_os_family == "Debian") | ternary("/bin/nano", "/usr/bin/nano") }}'
   tasks:
     - name: Update apt cache.
       ansible.builtin.apt:
@@ -13,7 +17,7 @@
         state: present
     - name: Retrieve nano executable.
       ansible.builtin.stat:
-        path: /usr/bin/nano
+        path: '{{ nano_path }}'
       register: nano
     - name: Check nano status.
       ansible.builtin.assert:

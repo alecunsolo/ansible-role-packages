@@ -1,0 +1,42 @@
+{{ ansible_managed | comment('c') }}
+
+Unattended-Upgrade::Automatic-Reboot "{{ packages_unattended_upgrades_reboot }}";
+Unattended-Upgrade::Automatic-Reboot-Time "{{ packages_unattended_upgrades_reboot_time }}";
+
+{% if packages_unattended_upgrades_mail_to %}
+Unattended-Upgrade::Mail "{{ packages_unattended_upgrades_mail_to }}";
+{% if packages_unattended_upgrades_mail_on_error %}
+Unattended-Upgrade::MailOnlyOnError "true";
+{% endif %}
+{% endif %}
+
+// Unattended-Upgrade::Allowed-Origins {
+Unattended-Upgrade::Origins-Pattern {
+{% for repo in packages_unattended_upgrades_repos%}
+    "{{ repo }}";
+{% endfor %}
+};
+
+Unattended-Upgrade::Package-Blacklist{
+{% for package in packages_unattended_upgrades_blacklist %}
+    "{{ package }}";
+{% endfor %}
+};
+
+// Enable the update/upgrade script (0=disable)
+APT::Periodic::Enable "1";
+
+// Do "apt-get update" automatically every n-days (0=disable)
+APT::Periodic::Update-Package-Lists "1";
+
+// Do "apt-get upgrade --download-only" every n-days (0=disable)
+APT::Periodic::Download-Upgradeable-Packages "0";
+
+// Run the "unattended-upgrade" security upgrade script
+// every n-days (0=disabled)
+// Requires the package "unattended-upgrades" and will write
+// a log in /var/log/unattended-upgrades
+APT::Periodic::Unattended-Upgrade "{{ (packages_unattended_upgrades_updateonly | bool) | ternary('0', '1') }}";
+
+// Do "apt-get autoclean" every n-days (0=disable)
+APT::Periodic::AutocleanInterval "7";

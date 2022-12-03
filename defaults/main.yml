@@ -3,9 +3,24 @@ packages_install_epel: true
 packages_autoremove: true
 packages_installed: []
 packages_removed: []
+
+# Automatic update settings
 packages_autoupdate: true
 # EL Automatic updates
 packages_dnf_automatic_type: default
 packages_dnf_automatic_timeout: 60
 packages_dnf_automatic_download: yes
 packages_dnf_automatic_apply: yes
+# Ubuntu/Debian Automatic updates
+packages_unattended_upgrades_reboot: "false"
+packages_unattended_upgrades_reboot_time: 04:30
+packages_unattended_upgrades_mail_to: root
+packages_unattended_upgrades_mail_on_error: "true"
+
+packages_unattended_upgrades_repos:
+  # - origin=${distro_id},codename=${distro_codename}
+  # - origin=${distro_id},codename=${distro_codename}-updates
+  # - origin=${distro_id},codename=${distro_codename}-proposed-updates
+  - origin=${distro_id},codename=${distro_codename}-security
+packages_unattended_upgrades_blacklist: []
+packages_unattended_upgrades_updateonly: true
