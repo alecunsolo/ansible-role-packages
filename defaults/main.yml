@@ -7,7 +7,7 @@ packages_removed: []
 # Automatic update settings
 packages_autoupdate: true
 # EL Automatic updates
-packages_dnf_automatic_type: default
+packages_dnf_automatic_type: security
 packages_dnf_automatic_timeout: 60
 packages_dnf_automatic_download: yes
 packages_dnf_automatic_apply: yes
