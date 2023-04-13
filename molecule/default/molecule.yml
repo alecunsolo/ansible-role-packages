@@ -25,7 +25,6 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     capabilities:
       - SYS_ADMIN
-    privileged: true
     command: /lib/systemd/systemd
   - name: ubuntu
     image: ghcr.io/alecunsolo/ubuntu-base-systemd:latest
@@ -37,7 +36,6 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     capabilities:
       - SYS_ADMIN
-    privileged: true
     command: /lib/systemd/systemd
 provisioner:
   name: ansible
