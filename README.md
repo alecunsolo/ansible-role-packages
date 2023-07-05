@@ -3,7 +3,10 @@
 
 Ansible Role: packages
 =========
+## DISCLAIMER
+After [this](https://www.redhat.com/en/blog/furthering-evolution-centos-stream) announcement I will not test on RHEL anymore.
 
+---------
 This role manages the packages installed in the target.
 
 Requirements
